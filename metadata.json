@@ -1,0 +1,9 @@
+{
+  "name": "Sidorahayu KKN 34",
+  "description": "Aplikasi Absensi dan Laporan Harian KKN Kelompok 34 Universitas Merdeka Malang di Desa Sidorahayu.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
