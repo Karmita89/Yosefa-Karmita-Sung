@@ -15,9 +15,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [isInitializing, setIsInitializing] = useState(true);
 
   const handleCredentialResponse = (response: any) => {
-    const decoded = JSON.parse(
-      atob(response.credential.split(".")[1])
-    );
+    const decoded = JSON.parse(atob(response.credential.split(".")[1]));
 
     const user: User = {
       id: decoded.sub,
@@ -31,10 +29,11 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const initializeGoogleSignIn = () => {
       if (window.google && window.google.accounts) {
         window.google.accounts.id.initialize({
-          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+          client_id:
+            "356105221480-b9rh9l52b8v99aqitspruq4jaeqvss5b.apps.googleusercontent.com",
           callback: handleCredentialResponse,
         });
 
@@ -48,11 +47,19 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
         );
 
         setIsInitializing(false);
-        clearInterval(interval);
       }
-    }, 100);
+    };
 
-    return () => clearInterval(interval);
+    // Cek apakah library sudah siap
+    if (window.google && window.google.accounts) {
+      initializeGoogleSignIn();
+    } else {
+      // Tunggu window load jika belum siap
+      window.addEventListener("load", initializeGoogleSignIn);
+    }
+
+    return () =>
+      window.removeEventListener("load", initializeGoogleSignIn);
   }, []);
 
   return (
