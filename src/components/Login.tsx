@@ -17,8 +17,10 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   useEffect(() => {
     if (!window.google) return;
 
+    const clientId = (import.meta.env as any).VITE_GOOGLE_CLIENT_ID || "771290788996-ouvplmhlljeadgtbe0e4398j1dle4g7e.apps.googleusercontent.com";
+
     window.google.accounts.id.initialize({
-      client_id: "356105221480-b9rh9l52b8v99aqitspruq4jaeqvss5b.apps.googleusercontent.com",
+      client_id: clientId,
       callback: handleCredentialResponse,
     });
 

@@ -18,3 +18,11 @@ View your app in AI Studio: https://ai.studio/apps/drive/1iMNvvhcfYecS4D6MUa1gbX
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Google Sign-In (Google Cloud Console)
+
+- Create an OAuth 2.0 Client ID in Google Cloud Console and use the following as the JavaScript origin when testing locally (adjust port if different):
+   - `http://localhost:5173`
+- The project already reads the client ID from the Vite env var `VITE_GOOGLE_CLIENT_ID`.
+- A local env file `.env.local` is included with the provided client ID. If you need to replace it, edit `.env.local`.
+- Make sure the OAuth Client has the correct Authorized JavaScript origins and that the Google Identity Services script is available in `index.html`.
