@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { User } from '../types';
+import { GOOGLE_CLIENT_ID } from '../constants';
 
 declare global {
   interface Window {
@@ -15,42 +16,54 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
-    if (!window.google) return;
-
-    const clientId = (import.meta.env as any).VITE_GOOGLE_CLIENT_ID || "771290788996-ouvplmhlljeadgtbe0e4398j1dle4g7e.apps.googleusercontent.com";
-
-    window.google.accounts.id.initialize({
-      client_id: clientId,
-      callback: handleCredentialResponse,
-    });
-
-    window.google.accounts.id.renderButton(
-      document.getElementById("googleSignIn"),
-      {
-        theme: "outline",
-        size: "large",
-        width: 280,
+    const initializeGoogleSignIn = () => {
+      if (!window.google) {
+        setTimeout(initializeGoogleSignIn, 100);
+        return;
       }
-    );
 
-    setIsInitializing(false);
-  }, []);
+      const handleCredentialResponse = (response: any) => {
+        try {
+          const decoded = JSON.parse(
+            atob(response.credential.split(".")[1])
+          );
 
-  const handleCredentialResponse = (response: any) => {
-    const decoded = JSON.parse(
-      atob(response.credential.split(".")[1])
-    );
+          const user: User = {
+            id: decoded.sub,
+            name: decoded.name,
+            email: decoded.email,
+            photoUrl: decoded.picture,
+            role: 'STUDENT',
+          };
 
-    const user: User = {
-      id: decoded.sub,
-      name: decoded.name,
-      email: decoded.email,
-      photoUrl: decoded.picture,
-      role: 'STUDENT',
+          onLogin(user);
+        } catch (error) {
+          console.error('Failed to decode JWT:', error);
+        }
+      };
+
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+      });
+
+      const googleSignInDiv = document.getElementById("googleSignIn");
+      if (googleSignInDiv) {
+        window.google.accounts.id.renderButton(
+          googleSignInDiv,
+          {
+            theme: "outline",
+            size: "large",
+            width: 280,
+          }
+        );
+      }
+
+      setIsInitializing(false);
     };
 
-    onLogin(user);
-  };
+    initializeGoogleSignIn();
+  }, [onLogin]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-900 via-red-800 to-slate-900 p-4 relative overflow-hidden">
