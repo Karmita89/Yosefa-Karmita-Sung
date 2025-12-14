@@ -94,54 +94,76 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   }, [onLogin]);
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-red-900 via-red-800 to-slate-900 p-4 relative overflow-hidden">
+    <div className="w-screen h-screen bg-gradient-to-br from-red-900 via-red-800 to-slate-900 relative overflow-hidden flex flex-col md:flex-row">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-red-600 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
         <div className="absolute top-[20%] -right-[10%] w-[40%] h-[40%] bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
       </div>
 
-      {/* Main Card */}
-      <div className="bg-white/95 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md z-10 border border-white/20">
-        {/* Header Section */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
-            <span className="material-icons-round text-4xl text-red-800">school</span>
+      {/* Left Column - Info Section (Desktop Only) */}
+      <div className="hidden md:flex md:w-1/2 flex-col items-center justify-center p-8 lg:p-12 z-10">
+        <div className="max-w-md text-center">
+          <div className="w-20 h-20 lg:w-28 lg:h-28 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/20">
+            <span className="material-icons-round text-5xl lg:text-6xl text-white">school</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">KKN Kelompok 34</h1>
-          <p className="text-gray-600">Desa Sidorahayu</p>
-          <p className="text-sm text-red-700 font-medium mt-1">
-            Universitas Merdeka Malang
+          <h1 className="text-3xl lg:text-4xl font-bold text-white mb-4">KKN Kelompok 34</h1>
+          <p className="text-lg lg:text-xl text-white/80 mb-2">Program Kuliah Kerja Nyata</p>
+          <p className="text-base text-white/70 mb-6">Desa Sidorahayu, Universitas Merdeka Malang</p>
+          <div className="w-1 h-1 bg-white/50 rounded-full mx-auto mb-6"></div>
+          <p className="text-sm text-white/60">
+            Kelompok 34 • KKN Unmer Malang
           </p>
         </div>
+      </div>
 
-        {/* Google Sign-In Button Container */}
-        <div className="flex justify-center mb-4">
-          <div
-            id="googleSignIn"
-            style={{
-              minHeight: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          ></div>
-        </div>
-
-        {/* Loading state shown while waiting */}
-        {!googleReady && (
-          <div className="flex justify-center py-3">
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-xs text-gray-500">Memuat Google Sign-In...</p>
+      {/* Right Column / Mobile Section - Login Card */}
+      <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 z-10">
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl w-full max-w-sm p-6 sm:p-8 border border-white/20">
+          {/* Mobile Header (hidden on desktop) */}
+          <div className="md:hidden text-center mb-8">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+              <span className="material-icons-round text-4xl text-red-800">school</span>
             </div>
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">KKN Kelompok 34</h1>
+            <p className="text-sm text-gray-600 mb-1">Desa Sidorahayu</p>
+            <p className="text-xs text-red-700 font-medium">Universitas Merdeka Malang</p>
           </div>
-        )}
 
-        {/* Helper text */}
-        <p className="text-xs text-center text-gray-400 mt-4">
-          Login menggunakan akun Google
-        </p>
+          {/* Desktop Header (hidden on mobile) */}
+          <div className="hidden md:block text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-1">Login</h2>
+            <p className="text-sm text-gray-600">Gunakan akun Google Anda</p>
+          </div>
+
+          {/* Google Sign-In Button Container */}
+          <div className="flex justify-center mb-6">
+            <div
+              id="googleSignIn"
+              style={{
+                minHeight: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            ></div>
+          </div>
+
+          {/* Loading state shown while waiting */}
+          {!googleReady && (
+            <div className="flex justify-center py-4">
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-xs text-gray-500">Memuat Google Sign-In...</p>
+              </div>
+            </div>
+          )}
+
+          {/* Helper text */}
+          <p className="text-xs text-center text-gray-400 mt-6">
+            Login menggunakan akun Google untuk melanjutkan
+          </p>
+        </div>
       </div>
 
       {/* Copyright Footer */}
@@ -151,3 +173,4 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
     </div>
   );
 };
+

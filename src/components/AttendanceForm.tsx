@@ -71,18 +71,18 @@ export const AttendanceForm: React.FC<AttendanceFormProps> = ({ userId, onSubmit
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 animate-fade-in">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-800">Form Kegiatan</h2>
-        <button onClick={onCancel} className="text-gray-400 hover:text-gray-600">
+    <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 animate-fade-in">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Form Kegiatan</h2>
+        <button onClick={onCancel} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-lg transition-colors">
           <span className="material-icons-round">close</span>
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Jenis Absensi</label>
-          <div className="grid grid-cols-3 gap-3">
+          <label className="block text-sm font-medium text-gray-700 mb-3">Jenis Absensi</label>
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[
               { id: ActivityType.CHECK_IN, label: 'Masuk', icon: 'login' },
               { id: ActivityType.CHECK_OUT, label: 'Pulang', icon: 'logout' },
@@ -92,14 +92,14 @@ export const AttendanceForm: React.FC<AttendanceFormProps> = ({ userId, onSubmit
                 key={opt.id}
                 type="button"
                 onClick={() => setType(opt.id)}
-                className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-all ${
+                className={`flex flex-col items-center justify-center p-3 sm:p-4 rounded-lg border transition-all ${
                   type === opt.id 
                     ? 'bg-red-50 border-red-500 text-red-700' 
                     : 'border-gray-200 hover:bg-gray-50 text-gray-600'
                 }`}
               >
-                <span className="material-icons-round mb-1">{opt.icon}</span>
-                <span className="text-sm font-medium">{opt.label}</span>
+                <span className="material-icons-round mb-1 text-lg sm:text-xl">{opt.icon}</span>
+                <span className="text-xs sm:text-sm font-medium">{opt.label}</span>
               </button>
             ))}
           </div>
@@ -107,17 +107,17 @@ export const AttendanceForm: React.FC<AttendanceFormProps> = ({ userId, onSubmit
 
         {/* Location Section */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Lokasi</label>
-          <div className="flex items-center gap-3">
+          <label className="block text-sm font-medium text-gray-700 mb-3">Lokasi</label>
+          <div className="flex items-center gap-2 sm:gap-3">
             <Button 
               type="button" 
               variant="secondary" 
               onClick={handleGetLocation} 
               isLoading={isLocating}
               icon="my_location"
-              className="w-full"
+              className="flex-1 text-sm sm:text-base py-2 sm:py-3"
             >
-              {locationState ? 'Lokasi Terkunci' : 'Ambil Lokasi Saat Ini'}
+              {locationState ? 'Lokasi Terkunci' : 'Ambil Lokasi'}
             </Button>
           </div>
           {locationState && (
@@ -130,7 +130,7 @@ export const AttendanceForm: React.FC<AttendanceFormProps> = ({ userId, onSubmit
 
         {/* Daily Report Specific Fields */}
         {type === ActivityType.DAILY_REPORT && (
-          <div className="space-y-4 border-t pt-4 border-gray-100">
+          <div className="space-y-4 border-t pt-6 border-gray-100">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Poin Kegiatan (untuk AI Assistant)
@@ -141,17 +141,17 @@ export const AttendanceForm: React.FC<AttendanceFormProps> = ({ userId, onSubmit
                 placeholder="Contoh: Rapat di balai desa, mengajar ngaji sore hari, koordinasi proker sampah..."
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm h-24 resize-none"
               />
-              <div className="flex justify-end mt-2">
+              <div className="flex justify-end mt-3">
                  <Button 
                    type="button" 
                    variant="ghost" 
                    onClick={handleAiGenerate} 
                    disabled={!notes || isAiLoading}
-                   className="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100"
+                   className="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 text-xs sm:text-sm px-3 sm:px-4 py-2"
                    icon="auto_awesome"
                    isLoading={isAiLoading}
                  >
-                   Buat Laporan Formal dengan AI
+                   Buat Laporan dengan AI
                  </Button>
               </div>
             </div>
@@ -171,11 +171,11 @@ export const AttendanceForm: React.FC<AttendanceFormProps> = ({ userId, onSubmit
           </div>
         )}
 
-        <div className="flex gap-3 pt-4">
-          <Button type="button" variant="secondary" onClick={onCancel} className="flex-1">
+        <div className="flex gap-3 pt-4 border-t">
+          <Button type="button" variant="secondary" onClick={onCancel} className="flex-1 py-2 sm:py-3">
             Batal
           </Button>
-          <Button type="submit" className="flex-1" icon="send">
+          <Button type="submit" className="flex-1 py-2 sm:py-3" icon="send">
             Kirim
           </Button>
         </div>
