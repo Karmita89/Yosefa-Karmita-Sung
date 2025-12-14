@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { User } from '../types';
 
 declare global {
   interface Window {
@@ -7,78 +6,82 @@ declare global {
   }
 }
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  photoUrl?: string;
+}
+
 interface LoginProps {
   onLogin: (user: User) => void;
 }
 
 export const Login: React.FC<LoginProps> = ({ onLogin }) => {
-  const [isInitializing, setIsInitializing] = useState(true);
-
-  const handleCredentialResponse = (response: any) => {
-    const decoded = JSON.parse(atob(response.credential.split(".")[1]));
-
-    const user: User = {
-      id: decoded.sub,
-      name: decoded.name,
-      email: decoded.email,
-      photoUrl: decoded.picture,
-      role: 'STUDENT',
-    };
-
-    onLogin(user);
-  };
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const initializeGoogleSignIn = () => {
-      if (window.google && window.google.accounts) {
+    const initialize = () => {
+      if (!window.google || !window.google.accounts) {
+        setError('Gagal memuat Google Sign-In. Pastikan HTTPS dan script Google tersedia.');
+        setLoading(false);
+        return;
+      }
+
+      try {
         window.google.accounts.id.initialize({
-          client_id:
-            "771290788996-ouvplmhlljeadgtbe0e4398j1dle4g7e.apps.googleusercontent.com",
-          callback: handleCredentialResponse,
+          client_id: '771290788996-ouvplmhlljeadgtbe0e4398j1dle4g7e.apps.googleusercontent.com', // ganti dengan Client ID kamu
+          callback: (response: any) => {
+            try {
+              const decoded = JSON.parse(atob(response.credential.split('.')[1]));
+              const user: User = {
+                id: decoded.sub,
+                name: decoded.name,
+                email: decoded.email,
+                photoUrl: decoded.picture,
+              };
+              onLogin(user);
+            } catch (err) {
+              console.error('Decoding error:', err);
+              setError('Login gagal. Silakan coba lagi.');
+            }
+          },
         });
 
         window.google.accounts.id.renderButton(
-          document.getElementById("googleSignIn")!,
-          {
-            theme: "outline",
-            size: "large",
-            width: 280,
-          }
+          document.getElementById('googleSignIn')!,
+          { theme: 'outline', size: 'large', width: 280 }
         );
 
-        setIsInitializing(false);
+        setLoading(false);
+      } catch (err) {
+        console.error('Google Sign-In initialization failed:', err);
+        setError('Login gagal karena konfigurasi Google Sign-In.');
+        setLoading(false);
       }
     };
 
-    // Cek apakah library sudah siap
     if (window.google && window.google.accounts) {
-      initializeGoogleSignIn();
+      initialize();
     } else {
-      // Tunggu window load jika belum siap
-      window.addEventListener("load", initializeGoogleSignIn);
+      window.addEventListener('load', initialize);
     }
 
-    return () =>
-      window.removeEventListener("load", initializeGoogleSignIn);
-  }, []);
+    return () => window.removeEventListener('load', initialize);
+  }, [onLogin]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-900 via-red-800 to-slate-900 p-4">
-      <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">
-          Login KKN Kelompok 34
-        </h1>
-
-        {/* DIV GOOGLE HARUS SELALU ADA */}
-        <div className="flex justify-center">
-          <div id="googleSignIn"></div>
-        </div>
-
-        {isInitializing && (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm text-center">
+        <h1 className="text-2xl font-bold mb-6">Login</h1>
+        <div id="googleSignIn" className="mb-4"></div>
+        {loading && (
           <div className="flex justify-center mt-4">
-            <div className="w-6 h-6 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
           </div>
         )}
+        {error && <p className="text-red-600 mt-4">{error}</p>}
       </div>
     </div>
   );
