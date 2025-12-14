@@ -33,7 +33,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
       if (window.google && window.google.accounts) {
         window.google.accounts.id.initialize({
           client_id:
-            "356105221480-b9rh9l52b8v99aqitspruq4jaeqvss5b.apps.googleusercontent.com",
+            "771290788996-ouvplmhlljeadgtbe0e4398j1dle4g7e.apps.googleusercontent.com",
           callback: handleCredentialResponse,
         });
 
