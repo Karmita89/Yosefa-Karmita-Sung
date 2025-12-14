@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { ActivityType, AttendanceRecord } from '../types';
 import { Button } from './Button';
-import { generateReportDraft } from '../services/geminiService';
+
 
 interface AttendanceFormProps {
   userId: string;
