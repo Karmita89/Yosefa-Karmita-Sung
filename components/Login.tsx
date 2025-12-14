@@ -64,7 +64,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
         <div className="absolute top-[20%] -right-[10%] w-[40%] h-[40%] bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-2000"></div>
       </div>
 
-      <div className="bg-white/95 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md z-10 border border-white/20">
+      <div className="bg-white/95 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full lg:max-w-3xl z-10 border border-white/20">
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
             <span className="material-icons-round text-4xl text-red-800">school</span>
@@ -172,7 +172,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm text-center">
+      <div className="bg-white p-6 rounded-xl shadow-md w-full sm:max-w-lg lg:max-w-none text-center lg:text-left">
         <h1 className="text-2xl font-bold mb-6">Login</h1>
         <div id="googleSignIn" className="mb-4"></div>
         {loading && (

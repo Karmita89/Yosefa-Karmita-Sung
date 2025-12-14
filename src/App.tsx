@@ -15,12 +15,14 @@ function App() {
   };
 
   return (
-    <div className="antialiased text-gray-800">
-      {user ? (
-        <Dashboard user={user} onLogout={handleLogout} />
-      ) : (
-        <Login onLogin={handleLogin} />
-      )}
+    <div className="antialiased text-gray-800 min-h-screen">
+      <div className="max-w-6xl mx-auto p-6 lg:p-10">
+        {user ? (
+          <Dashboard user={user} onLogout={handleLogout} />
+        ) : (
+          <Login onLogin={handleLogin} />
+        )}
+      </div>
     </div>
   );
 }
